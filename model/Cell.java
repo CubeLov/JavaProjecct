@@ -20,4 +20,12 @@ public class Cell implements Serializable {
     public void removePiece() {
         this.piece = null;
     }
+
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        Cell temp = (Cell) obj;
+        return temp.getPiece().equals(this.getPiece());
+    }
 }

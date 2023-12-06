@@ -66,6 +66,23 @@ public class GameController implements GameListener {
     public void onPlayerSwapChess() {
         // TODO: Init your swap function here.
         System.out.println("Implement your swap here.");
+        if(selectedPoint!=null&&selectedPoint2!=null){
+            if(model.canSwap(selectedPoint,selectedPoint2)){//判断是否可以交换(交换后是否可消除)
+                //model层交换
+                model.swapChessPiece(selectedPoint,selectedPoint2);
+                // remove view层中的两个棋子
+                ChessComponent chess1=view.removeChessComponentAtGrid(selectedPoint);
+                ChessComponent chess2=view.removeChessComponentAtGrid(selectedPoint2);
+                // set view 中的新棋子
+                view.setChessComponentAtGrid(selectedPoint,chess2);
+                view.setChessComponentAtGrid(selectedPoint2,chess1);
+                //重新绘制
+                chess1.repaint();
+                chess2.repaint();
+                selectedPoint=null;
+                selectedPoint2=null;
+            }
+        }
     }
 
     @Override
@@ -80,27 +97,29 @@ public class GameController implements GameListener {
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
-        if (selectedPoint2 != null) {
+        if (selectedPoint2 != null) {//已经有两个选择点，此时point为点击的第三个点
+            //第三个点和point1的距离
             var distance2point1 = Math.abs(selectedPoint.getCol() - point.getCol()) + Math.abs(selectedPoint.getRow() - point.getRow());
+            //第三个点和point2的距离
             var distance2point2 = Math.abs(selectedPoint2.getCol() - point.getCol()) + Math.abs(selectedPoint2.getRow() - point.getRow());
             var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
             var point2 = (ChessComponent) view.getGridComponentAt(selectedPoint2).getComponent(0);
-            if (distance2point1 == 0 && point1 != null) {
+            if (distance2point1 == 0 && point1 != null) {//第三个点为point1，取消选择point1
                 point1.setSelected(false);
                 point1.repaint();
                 selectedPoint = selectedPoint2;
                 selectedPoint2 = null;
-            } else if (distance2point2 == 0 && point2 != null) {
+            } else if (distance2point2 == 0 && point2 != null) {//第三个点为point2，取消选择point2
                 point2.setSelected(false);
                 point2.repaint();
                 selectedPoint2 = null;
-            } else if (distance2point1 == 1 && point2 != null) {
+            } else if (distance2point1 == 1 && point2 != null) {//第三个点为另一个与point1相邻的点
                 point2.setSelected(false);
                 point2.repaint();
                 selectedPoint2 = point;
                 component.setSelected(true);
                 component.repaint();
-            } else if (distance2point2 == 1 && point1 != null) {
+            } else if (distance2point2 == 1 && point1 != null) {//第三个点为另一个与point2相邻的点
                 point1.setSelected(false);
                 point1.repaint();
                 selectedPoint = selectedPoint2;
@@ -112,7 +131,7 @@ public class GameController implements GameListener {
         }
 
 
-        if (selectedPoint == null) {
+        if (selectedPoint == null) {//选择第一个棋子并画圈
             selectedPoint = point;
             component.setSelected(true);
             component.repaint();
@@ -121,18 +140,18 @@ public class GameController implements GameListener {
 
         var distance2point1 = Math.abs(selectedPoint.getCol() - point.getCol()) + Math.abs(selectedPoint.getRow() - point.getRow());
 
-        if (distance2point1 == 0) {
+        if (distance2point1 == 0) {//再次点击已选中的点，取消选择
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
             return;
         }
 
-        if (distance2point1 == 1) {
+        if (distance2point1 == 1) {//选中第二个相邻点，合法
             selectedPoint2 = point;
             component.setSelected(true);
             component.repaint();
-        } else {
+        } else {//距离过远，取消第一个选择点，将第二个选择点重设为第一个选择点
             selectedPoint2 = null;
 
             var grid = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);

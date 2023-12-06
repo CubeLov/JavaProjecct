@@ -20,4 +20,12 @@ public class ChessPiece {
 
     public Color getColor(){return color;}
 
+    public boolean equals(Object obj){
+        if (obj == null) {
+            return false;
+        }
+        ChessPiece temp = (ChessPiece) obj;
+        return this.name.equals(temp.name);
+    }
+
 }
