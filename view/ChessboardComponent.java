@@ -19,6 +19,9 @@ import static model.Constant.CHESSBOARD_ROW_SIZE;
 public class ChessboardComponent extends JComponent {
     private final CellComponent[][] gridComponents = new CellComponent[CHESSBOARD_ROW_SIZE.getNum()][CHESSBOARD_COL_SIZE.getNum()];
     private final int CHESS_SIZE;
+    /*
+    HashSet: 集合中元素无序，但保证没有相同元素
+     */
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
 
     private GameController gameController;
@@ -92,6 +95,9 @@ public class ChessboardComponent extends JComponent {
         getGridComponentAt(point).revalidate();
         chess.setSelected(false);
         return chess;
+    }
+    public void repaintChessComponentAtGrid(ChessboardPoint point){
+        gridComponents[point.getRow()][point.getCol()].repaint();
     }
 
     public CellComponent getGridComponentAt(ChessboardPoint point) {

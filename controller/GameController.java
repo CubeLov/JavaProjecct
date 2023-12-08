@@ -66,21 +66,31 @@ public class GameController implements GameListener {
     public void onPlayerSwapChess() {
         // TODO: Init your swap function here.
         System.out.println("Implement your swap here.");
-        if(selectedPoint!=null&&selectedPoint2!=null){
-            if(model.canSwap(selectedPoint,selectedPoint2)){//判断是否可以交换(交换后是否可消除)
+        if (selectedPoint != null && selectedPoint2 != null) {
+            if (model.canSwap(selectedPoint, selectedPoint2)) {//判断是否可以交换(交换后是否可消除)
                 //model层交换
-                model.swapChessPiece(selectedPoint,selectedPoint2);
+                model.swapChessPiece(selectedPoint, selectedPoint2);
                 // remove view层中的两个棋子
-                ChessComponent chess1=view.removeChessComponentAtGrid(selectedPoint);
-                ChessComponent chess2=view.removeChessComponentAtGrid(selectedPoint2);
+                ChessComponent chess1 = view.removeChessComponentAtGrid(selectedPoint);
+                ChessComponent chess2 = view.removeChessComponentAtGrid(selectedPoint2);
                 // set view 中的新棋子
-                view.setChessComponentAtGrid(selectedPoint,chess2);
-                view.setChessComponentAtGrid(selectedPoint2,chess1);
+                view.setChessComponentAtGrid(selectedPoint, chess2);
+                view.setChessComponentAtGrid(selectedPoint2, chess1);
                 //重新绘制
                 chess1.repaint();
                 chess2.repaint();
-                selectedPoint=null;
-                selectedPoint2=null;
+                selectedPoint = null;
+                selectedPoint2 = null;
+                score+=10*model.eliminateGrid();
+                for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
+                    for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                        ChessboardPoint point = new ChessboardPoint(i, j);
+                        if (model.getVisAtGrid(point)) {
+                            System.out.printf("%d %d\n",i,j);
+                            view.removeChessComponentAtGrid(point);
+                            view.repaintChessComponentAtGrid(point);
+                        }
+                    }
             }
         }
     }

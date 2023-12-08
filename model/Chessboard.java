@@ -1,7 +1,6 @@
 package model;
 
-import javax.swing.plaf.PanelUI;
-import java.util.Random;
+import java.util.Arrays;
 
 /**
  * This class store the real chess information.
@@ -10,11 +9,13 @@ import java.util.Random;
 public class Chessboard {
     // Cell->Piece
     private Cell[][] grid;
-
+    boolean[][] visRow;
+    boolean[][] visCol;
     public Chessboard() {
         this.grid =
                 new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
-
+        visRow=new boolean[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
+        visCol=new boolean[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
         initGrid();
         initPieces();
     }
@@ -85,10 +86,48 @@ public class Chessboard {
             }
         return false;
     }
+    /*
+    消除所有可消除的棋子，并返回消除棋子个数
+     */
+    public int eliminateGrid(){
+        int row=Constant.CHESSBOARD_ROW_SIZE.getNum();
+        int col=Constant.CHESSBOARD_COL_SIZE.getNum();
+        for(int i=0;i<row;i++){
+            Arrays.fill(visRow[i],false);
+            Arrays.fill(visCol[i],false);
+        }
+        int cnt=0;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(isInGrid(i,j-1)&&isInGrid(i,j+1)){
+                    if(grid[i][j-1].equals(grid[i][j])&&grid[i][j+1].equals(grid[i][j]))
+                        visRow[i][j]=visRow[i][j-1]=visRow[i][j+1]=true;
+                }
+                if(isInGrid(i-1,j)&&isInGrid(i+1,j)){
+                    if(grid[i-1][j].equals(grid[i][j])&&grid[i+1][j].equals(grid[i][j])){
+                        visCol[i][j]=visCol[i-1][j]=visCol[i+1][j]=true;
+                    }
+                }
+            }
+        }
+        for(int i=0;i<row;i++)
+            for(int j=0;j<col;j++){
+                if(visRow[i][j])
+                    cnt++;
+                if(visCol[i][j])
+                    cnt++;
+                if(visRow[i][j]||visCol[i][j])
+                    grid[i][j]=null;
+            }
+        return cnt;
+    }
+    public boolean getVisAtGrid(ChessboardPoint point){
+        return visRow[point.getRow()][point.getCol()]||visCol[point.getRow()][point.getCol()];
+    }
     private boolean isInGrid(int row,int col){
         if(row<0||row>=Constant.CHESSBOARD_ROW_SIZE.getNum())
             return false;
-        if(col<0||row>=Constant.CHESSBOARD_COL_SIZE.getNum())
+        if(col<0||col>=Constant.CHESSBOARD_COL_SIZE.getNum())
             return false;
         return true;
     }
