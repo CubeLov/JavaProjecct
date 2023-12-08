@@ -81,18 +81,23 @@ public class GameController implements GameListener {
                 chess2.repaint();
                 selectedPoint = null;
                 selectedPoint2 = null;
-                score+=10*model.eliminateGrid();
-                for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
-                    for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                        ChessboardPoint point = new ChessboardPoint(i, j);
-                        if (model.getVisAtGrid(point)) {
-                            System.out.printf("%d %d\n",i,j);
-                            view.removeChessComponentAtGrid(point);
-                            view.repaintChessComponentAtGrid(point);
-                        }
-                    }
+                update();
             }
         }
+    }
+    /*
+    更新分数，在窗口中清除已消除棋子
+     */
+    private void update(){
+        score+=10*model.eliminateGrid();
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if (model.getVisAtGrid(point)) {
+                    view.removeChessComponentAtGrid(point);
+                    view.repaintChessComponentAtGrid(point);
+                }
+            }
     }
 
     @Override

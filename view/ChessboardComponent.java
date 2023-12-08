@@ -97,7 +97,7 @@ public class ChessboardComponent extends JComponent {
         return chess;
     }
     public void repaintChessComponentAtGrid(ChessboardPoint point){
-        gridComponents[point.getRow()][point.getCol()].repaint();
+        getGridComponentAt(point).repaint();
     }
 
     public CellComponent getGridComponentAt(ChessboardPoint point) {
