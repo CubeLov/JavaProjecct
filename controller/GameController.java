@@ -10,6 +10,8 @@ import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Controller is the connection between model and view,
@@ -81,14 +83,14 @@ public class GameController implements GameListener {
                 chess2.repaint();
                 selectedPoint = null;
                 selectedPoint2 = null;
-                update();
+                updateNull();
             }
         }
     }
     /*
     更新分数，在窗口中清除已消除棋子
      */
-    private void update(){
+    private void updateNull(){
         score+=10*model.eliminateGrid();
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
@@ -99,10 +101,23 @@ public class GameController implements GameListener {
                 }
             }
     }
-
     @Override
     public void onPlayerNextStep() {
         // TODO: Init your next step function here.
+        model.fallDown();
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                ChessboardPoint point = new ChessboardPoint(i, j);
+                if(!model.getVisAtGrid(point))
+                    view.removeChessComponentAtGrid(point);
+                view.repaintChessComponentAtGrid(point);
+            }
+        view.initiateChessComponent(model);
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                view.repaintChessComponentAtGrid(new ChessboardPoint(i,j));
+            }
+
         System.out.println("Implement your next step here.");
         score++;
         this.statusLabel.setText("Score:" + score);
