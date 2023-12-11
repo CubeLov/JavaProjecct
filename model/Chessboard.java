@@ -96,11 +96,8 @@ public class Chessboard {
     public int eliminateGrid(){
         int row=Constant.CHESSBOARD_ROW_SIZE.getNum();
         int col=Constant.CHESSBOARD_COL_SIZE.getNum();
-        for(int i=0;i<row;i++){
-            Arrays.fill(visRow[i],false);
-            Arrays.fill(visCol[i],false);
-        }
         int cnt=0;
+        clearVis();
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
                 if(isInGrid(i,j-1)&&isInGrid(i,j+1)){
@@ -125,6 +122,12 @@ public class Chessboard {
             }
         return cnt;
     }
+    public void clearVis(){
+        for(int i=0;i<Constant.CHESSBOARD_ROW_SIZE.getNum();i++){
+            Arrays.fill(visRow[i],false);
+            Arrays.fill(visCol[i],false);
+        }
+    }
     private void clearNewGrid(){
         for(int i=0;i<Constant.CHESSBOARD_ROW_SIZE.getNum();i++)
             for(int j=0;j<Constant.CHESSBOARD_COL_SIZE.getNum();j++)
@@ -145,7 +148,31 @@ public class Chessboard {
                     newGrid[row-(++tot)][j].setPiece(grid[i][j].getPiece());
             }
         }
-        grid=newGrid;
+        for(int i=0;i<row;i++)
+            for(int j=0;j<col;j++){
+                if(newGrid[i][j].getPiece()!=null)
+                    grid[i][j].setPiece(newGrid[i][j].getPiece());
+                else
+                    grid[i][j].setPiece(null);
+            }
+
+    }
+    public int getTopPositionAtCol(int col){
+        for(int i=Constant.CHESSBOARD_ROW_SIZE.getNum()-1;i>=0;i--)
+            if(grid[i][col].getPiece()==null)
+                return i;
+        return 0;
+    }
+    public void regeneratePieces(){
+        int row=Constant.CHESSBOARD_ROW_SIZE.getNum();
+        int col=Constant.CHESSBOARD_COL_SIZE.getNum();
+        for(int j=0;j<col;j++){
+            for(int i=row-1;i>=0;i--){
+                if(grid[i][j].getPiece()==null){
+                    grid[i][j].setPiece(new ChessPiece( Util.RandomPick(new String[]{"💎", "⚪", "▲", "🔶"})));
+                }
+            }
+        }
     }
     public boolean getVisAtGrid(ChessboardPoint point){
         return visRow[point.getRow()][point.getCol()]||visCol[point.getRow()][point.getCol()];
@@ -170,7 +197,6 @@ public class Chessboard {
     public Cell[][] getGrid() {
         return grid;
     }
-
 
 
 }

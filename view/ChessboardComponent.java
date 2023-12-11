@@ -53,7 +53,6 @@ public class ChessboardComponent extends JComponent {
                 }
             }
         }
-
     }
 
     public void initiateGridComponents() {
@@ -97,7 +96,11 @@ public class ChessboardComponent extends JComponent {
     public void repaintChessComponentAtGrid(ChessboardPoint point){
         getGridComponentAt(point).repaint();
     }
-
+    public void repaintAllChessComponent(){
+        for(int i=0;i< CHESSBOARD_ROW_SIZE.getNum();i++)
+            for(int j=0;j< CHESSBOARD_COL_SIZE.getNum();j++)
+                repaintChessComponentAtGrid(new ChessboardPoint(i,j));
+    }
     public CellComponent getGridComponentAt(ChessboardPoint point) {
         return gridComponents[point.getRow()][point.getCol()];
     }
@@ -139,5 +142,8 @@ public class ChessboardComponent extends JComponent {
                 gameController.onPlayerClickChessPiece(getChessboardPoint(e.getPoint()), (ChessComponent) clickedComponent.getComponents()[0]);
             }
         }
+    }
+    public int getCHESS_SIZE() {
+        return CHESS_SIZE;
     }
 }

@@ -24,6 +24,7 @@ public class GameController implements GameListener {
 
     private Chessboard model;
     private ChessboardComponent view;
+    private int opt;
 
 
     // Record whether there is a selected piece before
@@ -45,7 +46,7 @@ public class GameController implements GameListener {
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
-
+        this.opt=1;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
@@ -100,26 +101,50 @@ public class GameController implements GameListener {
                     view.repaintChessComponentAtGrid(point);
                 }
             }
+        opt=1;
     }
     @Override
     public void onPlayerNextStep() {
         // TODO: Init your next step function here.
-        model.fallDown();
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                ChessboardPoint point = new ChessboardPoint(i, j);
-                if(!model.getVisAtGrid(point))
-                    view.removeChessComponentAtGrid(point);
-                view.repaintChessComponentAtGrid(point);
-            }
-        view.initiateChessComponent(model);
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                view.repaintChessComponentAtGrid(new ChessboardPoint(i,j));
-            }
+        switch (opt){
+            case 1:
+                model.fallDown();
+                for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
+                    for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                        ChessboardPoint point = new ChessboardPoint(i, j);
+                        if(!model.getVisAtGrid(point))
+                            view.removeChessComponentAtGrid(point);
+                        view.repaintChessComponentAtGrid(point);
+                    }
+                model.clearVis();
+                view.initiateChessComponent(model);
+                view.repaintAllChessComponent();
+                opt=2;
+                break;
+            case 2:
+                int[] upPosition=new int[Constant.CHESSBOARD_COL_SIZE.getNum()];
+                for(int j=0;j<Constant.CHESSBOARD_COL_SIZE.getNum();j++){
+                    upPosition[j]=model.getTopPositionAtCol(j);
+                }
+                model.regeneratePieces();
+                for(int j=0;j<Constant.CHESSBOARD_COL_SIZE.getNum();j++)
+                    for(int i=upPosition[j];i>=0;i--){
+                        ChessboardPoint point = new ChessboardPoint(i, j);
+                        view.setChessComponentAtGrid(point,new ChessComponent(view.getCHESS_SIZE(),model.getChessPieceAt(point)));
+                        view.repaintChessComponentAtGrid(point);
+                    }
+                if(model.checkGrid())
+                    opt=3;
+                else //TODO:增加没有可以消除棋子的弹窗
+                    opt=1;
+                break;
+            case 3:
+                updateNull();
+                break;
+        }
+
 
         System.out.println("Implement your next step here.");
-        score++;
         this.statusLabel.setText("Score:" + score);
 
     }
