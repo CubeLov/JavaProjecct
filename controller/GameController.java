@@ -57,13 +57,19 @@ public class GameController implements GameListener {
         view.removeAllChessComponentsAtGrids();
         view.initiateChessComponent(model);
         view.repaint();
+        restartGame();
     }
 
     // click an empty cell
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
     }
-
+    public void restartGame(){
+        this.score=0;
+        this.opt=-1;
+        this.selectedPoint=this.selectedPoint2=null;
+        this.statusLabel.setText("Score:" + score);
+    }
     @Override
     public void onPlayerSwapChess() {
         // TODO: Init your swap function here.
