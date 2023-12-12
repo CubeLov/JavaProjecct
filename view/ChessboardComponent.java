@@ -23,7 +23,6 @@ public class ChessboardComponent extends JComponent {
     HashSet: 集合中元素无序，但保证没有相同元素
      */
     private final Set<ChessboardPoint> riverCell = new HashSet<>();
-
     private GameController gameController;
 
     public ChessboardComponent(int chessSize) {
@@ -83,6 +82,9 @@ public class ChessboardComponent extends JComponent {
 
     public void removeAllChessComponentsAtGrids(){
         //todo:  complete the method
+        for(int i=0;i< CHESSBOARD_ROW_SIZE.getNum();i++)
+            for(int j=0;j< CHESSBOARD_COL_SIZE.getNum();j++)
+                removeChessComponentAtGrid(new ChessboardPoint(i,j));
     }
 
     public ChessComponent removeChessComponentAtGrid(ChessboardPoint point) {

@@ -36,6 +36,7 @@ public class ChessGameFrame extends JFrame {
         addChessboard();
         addLabel();
         addHelloButton();
+        addRestartButton();
         addSwapConfirmButton();
         addNextStepButton();
         addLoadButton();
@@ -95,6 +96,16 @@ public class ChessGameFrame extends JFrame {
             JOptionPane.showMessageDialog(this, "Show hello world");
         });
         button.setLocation(HEIGTH, HEIGTH / 10 + 120);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+    }
+    private void addRestartButton() {
+        JButton button = new JButton("Restart");
+        button.addActionListener(e -> {
+            gameController.initialize();
+        });
+        button.setLocation(HEIGTH, HEIGTH / 10 + 440);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);

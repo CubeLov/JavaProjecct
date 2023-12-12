@@ -46,18 +46,17 @@ public class GameController implements GameListener {
     public GameController(ChessboardComponent view, Chessboard model) {
         this.view = view;
         this.model = model;
-        this.opt=1;
+        this.opt=-1;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
     }
 
     public void initialize() {
-        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
-            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
-                //todo: complete it when restart game
-            }
-        }
+        model.initPieces();
+        view.removeAllChessComponentsAtGrids();
+        view.initiateChessComponent(model);
+        view.repaint();
     }
 
     // click an empty cell
