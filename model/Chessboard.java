@@ -1,6 +1,9 @@
 package model;
 
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class store the real chess information.
@@ -9,10 +12,13 @@ import java.util.Arrays;
 public class Chessboard {
     // Cell->Piece
     private Cell[][] grid;
+    StringBuilder sb;
+    boolean flag = true;
     private Cell[][] newGrid;
     boolean[][] visRow;
     boolean[][] visCol;
     public Chessboard() {
+        sb=new StringBuilder();
         this.grid =
                 new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
         this.newGrid =
@@ -204,4 +210,30 @@ public class Chessboard {
     }
 
 
+    public List<String> convertBoardToList() {
+        List<String>saveLines=new ArrayList<>();
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            sb.setLength(0);
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                ChessPiece piece=grid[i][j].getPiece();
+                if(piece!=null){
+                    sb.append(piece.getName()).append(" ");
+                }else {
+                    sb.append("0 ");
+                }
+            }
+            saveLines.add(sb.toString());
+        }
+        sb.setLength(0);
+        return saveLines;
+    }
+
+    public void convertListToBoard(List<String> loadLines) {
+        for (int i = 0; i < loadLines.size(); i++) {
+            String[] elements = loadLines.get(i).split(" ");
+            for (int j = 0; j < elements.length; j++) {
+                grid[i][j].setPiece(new ChessPiece(elements[j]));
+            }
+        }
+    }
 }

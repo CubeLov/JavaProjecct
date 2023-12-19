@@ -10,6 +10,10 @@ import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -227,4 +231,39 @@ public class GameController implements GameListener {
 
     }
 
+    public void saveGameFromFile(String path) {
+        List <String> saveLines=model.convertBoardToList();
+        for(String line:saveLines){
+            System.out.println(line);
+        }
+        try {
+            Files.write(Path.of(path),saveLines);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void loadGameFromFile(String path) {
+
+        try {
+            List<String> loadLines= Files.readAllLines(Path.of(path));
+            model.convertListToBoard(loadLines);
+            view.removeAllChessComponentsAtGrids();
+            view.initiateChessComponent(model);
+            view.repaint();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+//        List <String> loadLines=model.convertBoardToList();
+//        for(String line:loadLines){
+//            System.out.println(line);
+//        }
+//        try {
+//            Files.write(Path.of(path),loadLines);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+    }
 }

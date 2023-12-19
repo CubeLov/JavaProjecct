@@ -20,6 +20,34 @@ public class ChessGameFrame extends JFrame {
     private ChessboardComponent chessboardComponent;
 
     private JLabel statusLabel;
+    private int score=0;
+    private int step=0;//need to write
+    private int steplimits =0;
+    public int getStep() {
+        return step;
+    }
+
+    public void setStep(int step) {
+        this.step = step;
+    }
+
+
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getSteplimits() {
+        return steplimits;
+    }
+
+    public void setSteplimits(int steplimits) {
+        this.steplimits = steplimits;
+    }
 
     public ChessGameFrame(int width, int height) {
         setTitle("2023 CS109 Project Demo"); //设置标题
@@ -40,6 +68,7 @@ public class ChessGameFrame extends JFrame {
         addSwapConfirmButton();
         addNextStepButton();
         addLoadButton();
+        addSaveButton();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -140,7 +169,21 @@ public class ChessGameFrame extends JFrame {
             System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this, "Input Path here");
             System.out.println(path);
-//            gameController.loadGameFromFile(path);
+            gameController.loadGameFromFile(path);
+        });
+    }
+    private void addSaveButton() {
+        JButton button = new JButton("Save");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 520);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(e -> {
+            System.out.println("Click save");
+            String path = JOptionPane.showInputDialog(this, "Input Path here");
+            System.out.println(path);
+            gameController.saveGameFromFile(path);
         });
     }
 
