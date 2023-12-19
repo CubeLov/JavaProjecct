@@ -6,12 +6,9 @@ import model.Chessboard;
 import model.ChessboardPoint;
 import view.CellComponent;
 import view.ChessComponent;
-import view.ChessGameFrame;
 import view.ChessboardComponent;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Controller is the connection between model and view,
