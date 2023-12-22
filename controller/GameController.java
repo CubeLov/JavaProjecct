@@ -9,6 +9,10 @@ import view.ChessComponent;
 import view.ChessboardComponent;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Controller is the connection between model and view,
@@ -220,8 +224,27 @@ public class GameController implements GameListener {
             component.setSelected(true);
             component.repaint();
         }
+    }
 
+    public void saveGameToFile(String path) {
+        List<String> saveLines=model.convertBoardToList();
+        try {
+            Files.write(Path.of(path),saveLines);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public void loadGameFromFile(String path) {
+        try {
+            List<String> loadLines= Files.readAllLines(Path.of(path));
+            model.convertListToBoard(loadLines);
+            view.removeAllChessComponentsAtGrids();
+            view.initiateChessComponent(model);
+            view.repaint();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

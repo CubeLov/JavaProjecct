@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This class store the real chess information.
@@ -12,6 +14,7 @@ public class Chessboard {
     private Cell[][] newGrid;
     boolean[][] visRow;
     boolean[][] visCol;
+    StringBuilder sb;
     public Chessboard() {
         this.grid =
                 new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
@@ -19,6 +22,7 @@ public class Chessboard {
                 new Cell[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
         visRow=new boolean[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
         visCol=new boolean[Constant.CHESSBOARD_ROW_SIZE.getNum()][Constant.CHESSBOARD_COL_SIZE.getNum()];
+        sb=new StringBuilder();
         initGrid();
         initPieces();
     }
@@ -203,5 +207,30 @@ public class Chessboard {
         return grid;
     }
 
+    public List<String> convertBoardToList() {
+        List<String>saveLines=new ArrayList<>();
+        for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++) {
+            sb.setLength(0);
+            for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                ChessPiece piece=grid[i][j].getPiece();
+                if(piece!=null){
+                    sb.append(piece.getName()).append(" ");
+                }else {
+                    sb.append("0 ");
+                }
+            }
+            saveLines.add(sb.toString());
+        }
+        return saveLines;
+    }
+
+    public void convertListToBoard(List<String> loadLines) {
+        for (int i = 0; i < loadLines.size(); i++) {
+            String[] elements = loadLines.get(i).split(" ");
+            for (int j = 0; j < elements.length; j++) {
+                grid[i][j].setPiece(new ChessPiece(elements[j]));
+            }
+        }
+    }
 
 }

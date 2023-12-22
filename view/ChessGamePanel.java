@@ -34,7 +34,7 @@ public class ChessGamePanel extends JPanel {
         addRestartButton();
         addSwapConfirmButton();
         addNextStepButton();
-        addLoadButton();
+        addSaveButton();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -53,6 +53,7 @@ public class ChessGamePanel extends JPanel {
         this.gameController = gameController;
     }
 
+
     /**
      * 在游戏面板中添加棋盘
      */
@@ -66,7 +67,7 @@ public class ChessGamePanel extends JPanel {
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        this.statusLabel = new JLabel("Sample label");
+        this.statusLabel = new JLabel("Score:0");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10);
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
@@ -99,18 +100,16 @@ public class ChessGamePanel extends JPanel {
         add(button);
     }
 
-    private void addLoadButton() {
-        JButton button = new JButton("Load");
+    private void addSaveButton() {
+        JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 280);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
         button.addActionListener(e -> {
-            System.out.println("Click load");
             String path = JOptionPane.showInputDialog(this, "Input Path here");
-            System.out.println(path);
-//            gameController.loadGameFromFile(path);
+            gameController.saveGameToFile(path);
         });
     }
 
