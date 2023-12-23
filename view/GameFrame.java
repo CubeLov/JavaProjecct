@@ -5,6 +5,12 @@ import model.Chessboard;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameFrame extends JFrame{
     private JPanel mainPanel;
@@ -12,6 +18,8 @@ public class GameFrame extends JFrame{
     private StartPanel startPanel;
     private SetPanel setPanel;
     private ChessGamePanel manualGamePanel;
+    private OnlinePanel onlinePanel;
+    private RegisterPanel registerPanel;
     private final int WIDTH;
     private final int HEIGTH;
     public GameFrame(int width, int height) {
@@ -19,11 +27,16 @@ public class GameFrame extends JFrame{
         startPanel=new StartPanel(width,height);
         setPanel=new SetPanel(width,height);
         manualGamePanel=new ChessGamePanel(width,height);
+        onlinePanel=new OnlinePanel(width,height);
+        registerPanel=new RegisterPanel(width,height);
         cardLayout=new CardLayout();
         mainPanel.setLayout(cardLayout);
+        setRegisterPanel();
         setStartPanel();
         setSetPanel();
         setManualGamePanel();
+        setOnlinePanel();
+
 
         this.WIDTH = width;
         this.HEIGTH = height;
@@ -44,6 +57,9 @@ public class GameFrame extends JFrame{
             manualGamePanel.getGameController().loadGameFromFile(path);
             cardLayout.show(mainPanel,"ManualGame");
         });
+        startPanel.getOnlineButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Online");
+        });
         mainPanel.add(startPanel,"Start");
     }
 
@@ -56,18 +72,41 @@ public class GameFrame extends JFrame{
     }
     private void setManualGamePanel(){
         manualGamePanel.setBackground(Color.GRAY);
+        GameController gameController=new GameController(manualGamePanel.getChessboardComponent(),new Chessboard());
+        manualGamePanel.setGameController(gameController);
+        gameController.setStatusLabel(manualGamePanel.getStatusLabel());
         mainPanel.add(manualGamePanel,"ManualGame");
     }
+    private void setOnlinePanel(){
+        mainPanel.add(onlinePanel,"Online");
+        GameController gameController=new GameController(onlinePanel.getChessboardComponent(),new Chessboard());
+        onlinePanel.setGameController(gameController);
+        gameController.setStatusLabel(onlinePanel.getStatusLabel());
+        onlinePanel.setGameController(onlinePanel.getGameController());
 
-    public ChessboardComponent getChessboardComponent() {
-        return manualGamePanel.getChessboardComponent();
+        onlinePanel.getUpdateButton().addActionListener(e->{
+            writeOnlineScore("records/score.txt");
+        });
     }
-
-    public void setGameController(GameController gameController) {
-        manualGamePanel.setGameController(gameController);
+    private void writeOnlineScore(String path){
+        List<String> saveLines=new ArrayList<>();
+        int score=onlinePanel.getScore();
+        saveLines.add(registerPanel.getId());
+        saveLines.add(Integer.toString(score));
+        try {
+            Files.write(Path.of(path),saveLines);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    public JLabel getStatusLabel() {
-        return manualGamePanel.getStatusLabel();
+    private void setRegisterPanel(){
+        registerPanel.getConfirmButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Start");
+            registerPanel.setId(registerPanel.getText());
+        });
+        mainPanel.add(registerPanel,"Register");
+    }
+    public String getName(){
+        return registerPanel.getId();
     }
 }

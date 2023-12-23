@@ -247,4 +247,7 @@ public class GameController implements GameListener {
         }
     }
 
+    public int getScore() {
+        return score;
+    }
 }

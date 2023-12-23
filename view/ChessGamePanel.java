@@ -10,8 +10,8 @@ import java.awt.*;
  */
 public class ChessGamePanel extends JPanel {
     //    public final Dimension FRAME_SIZE ;
-    private final int WIDTH;
-    private final int HEIGTH;
+    protected final int WIDTH;
+    protected final int HEIGTH;
 
     private final int ONE_CHESS_SIZE;
 
