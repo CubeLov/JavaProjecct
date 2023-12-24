@@ -12,6 +12,7 @@ public class StartPanel extends JPanel {
     private JButton loadButton;
 
     private JButton onlineButton;
+    private JButton rankButton;
     public StartPanel(int width, int height){
         this.WIDTH=width;
         this.HEIGTH=height;
@@ -22,6 +23,7 @@ public class StartPanel extends JPanel {
         addManualButton();
         addLoadButton();
         addOnlineBUtton();
+        addRankButton();
     }
     private void addLabel(){
         label=new JLabel("Match-3 Games");
@@ -52,6 +54,13 @@ public class StartPanel extends JPanel {
         onlineButton.setBounds(WIDTH/2-100,HEIGTH/2+120,200,80);
         add(onlineButton);
     }
+    private void addRankButton(){
+        rankButton=new JButton("Rank");
+        rankButton.setFont((new Font("Rockwell", Font.PLAIN, 25)));
+        rankButton.setFocusPainted(false);
+        rankButton.setBounds(WIDTH/2-100,HEIGTH/2+220,200,80);
+        add(rankButton);
+    }
 
     public JButton getManualButton() {
         return manualButton;
@@ -63,6 +72,10 @@ public class StartPanel extends JPanel {
 
     public JButton getOnlineButton() {
         return onlineButton;
+    }
+
+    public JButton getRankButton() {
+        return rankButton;
     }
 
     public static void main(String[] args) {

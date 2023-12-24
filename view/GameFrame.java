@@ -20,6 +20,7 @@ public class GameFrame extends JFrame{
     private ChessGamePanel manualGamePanel;
     private OnlinePanel onlinePanel;
     private RegisterPanel registerPanel;
+    private RankPanel rankPanel;
     private final int WIDTH;
     private final int HEIGTH;
     public GameFrame(int width, int height) {
@@ -29,6 +30,7 @@ public class GameFrame extends JFrame{
         manualGamePanel=new ChessGamePanel(width,height);
         onlinePanel=new OnlinePanel(width,height);
         registerPanel=new RegisterPanel(width,height);
+        rankPanel=new RankPanel(width,height);
         cardLayout=new CardLayout();
         mainPanel.setLayout(cardLayout);
         setRegisterPanel();
@@ -36,7 +38,7 @@ public class GameFrame extends JFrame{
         setSetPanel();
         setManualGamePanel();
         setOnlinePanel();
-
+        setRankPanel();
 
         this.WIDTH = width;
         this.HEIGTH = height;
@@ -59,6 +61,9 @@ public class GameFrame extends JFrame{
         });
         startPanel.getOnlineButton().addActionListener(e->{
             cardLayout.show(mainPanel,"Online");
+        });
+        startPanel.getRankButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Rank");
         });
         mainPanel.add(startPanel,"Start");
     }
@@ -87,6 +92,9 @@ public class GameFrame extends JFrame{
         onlinePanel.getUpdateButton().addActionListener(e->{
             writeOnlineScore("records/score.txt");
         });
+        onlinePanel.getBackButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Start");
+        });
     }
     private void writeOnlineScore(String path){
         List<String> saveLines=new ArrayList<>();
@@ -105,6 +113,12 @@ public class GameFrame extends JFrame{
             registerPanel.setId(registerPanel.getText());
         });
         mainPanel.add(registerPanel,"Register");
+    }
+    private void setRankPanel(){
+        rankPanel.getBackButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Start");
+        });
+        mainPanel.add(rankPanel,"Rank");
     }
     public String getName(){
         return registerPanel.getId();

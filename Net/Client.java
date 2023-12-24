@@ -20,18 +20,18 @@ public class Client {
         GameFrame gameFrame=new GameFrame(1100,810);
         gameFrame.setVisible(true);
         int onlineScore=0;
+        String name="";
         Socket socket=new Socket("127.0.0.1",8888);
         new ClientReaderThread(socket).start();
         OutputStream outputStream=socket.getOutputStream();
         DataOutputStream dataOutputStream=new DataOutputStream(outputStream);
         while(true){
-            String name="";
             if(gameFrame.getName()!=null)
                 name=gameFrame.getName();
             onlineScore=getOnlineScore("records/score.txt");
             String tempName=getOnlineName("records/score.txt");
             if(onlineScore!=0&&name.equals(tempName)){
-                String message=Integer.toString(onlineScore)+" "+name;
+                String message=name+" "+Integer.toString(onlineScore);
                 dataOutputStream.writeUTF(message);
                 dataOutputStream.flush();
                 clearFile("records/score.txt");

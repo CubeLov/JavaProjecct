@@ -1,5 +1,7 @@
 package Net;
 
+import view.Player;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -15,6 +17,8 @@ public class ServerReaderThread extends Thread{
             while (true) {
                 try {
                     String message=dataInputStream.readUTF();
+                    String[] p=message.split(" ");
+                    Server.players.add(new Player(p[0],Integer.parseInt(p[1])));
                     System.out.println(message);
                     sendMessageToAll(message);
                 } catch (Exception e) {
@@ -35,9 +39,9 @@ public class ServerReaderThread extends Thread{
     private void sendMessageToAll(String message) throws Exception {
         for (Socket onlineSocket : Server.onlineSockets) {
             OutputStream outputStream=onlineSocket.getOutputStream();
-            DataOutputStream dataOutputStream=new DataOutputStream(outputStream);
-            dataOutputStream.writeUTF(message);
-            dataOutputStream.flush();
+            ObjectOutputStream objectOutputStream=new ObjectOutputStream(outputStream);
+            objectOutputStream.writeObject(Server.players);
+            objectOutputStream.flush();
         }
     }
 }
