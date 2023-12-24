@@ -77,7 +77,7 @@ public class GameFrame extends JFrame{
     }
     private void setManualGamePanel(){
         manualGamePanel.setBackground(Color.GRAY);
-        GameController gameController=new GameController(manualGamePanel.getChessboardComponent(),new Chessboard());
+        GameController gameController=new GameController(manualGamePanel.getChessboardComponent(),new Chessboard(),"Manual",1);
         manualGamePanel.setGameController(gameController);
         gameController.setStatusLabel(manualGamePanel.getStatusLabel());
         mainPanel.add(manualGamePanel,"ManualGame");
@@ -87,7 +87,7 @@ public class GameFrame extends JFrame{
     }
     private void setOnlinePanel(){
         mainPanel.add(onlinePanel,"Online");
-        GameController gameController=new GameController(onlinePanel.getChessboardComponent(),new Chessboard());
+        GameController gameController=new GameController(onlinePanel.getChessboardComponent(),new Chessboard(),"Online",0);
         onlinePanel.setGameController(gameController);
         gameController.setStatusLabel(onlinePanel.getStatusLabel());
         onlinePanel.setGameController(onlinePanel.getGameController());

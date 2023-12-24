@@ -7,10 +7,12 @@ public class OnlinePanel extends ChessGamePanel {
     private JButton updateButton;
     public OnlinePanel(int width, int height) {
         super(width, height);
-        addSaveButton();
+        addUpdateButton();
     }
 
     public void addSaveButton() {
+    }
+    public void addUpdateButton(){
         updateButton=new JButton("Update");
         updateButton.setLocation(HEIGTH, HEIGTH / 10 + 440);
         updateButton.setSize(200, 60);

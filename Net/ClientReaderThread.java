@@ -26,7 +26,11 @@ public class ClientReaderThread extends Thread{
                     List<Player> players=(List<Player>)objectInputStream.readObject();
                     Client.clearFile("records/rank.txt");
                     writeRank("records/rank.txt",players);
+                    for (Player player : players) {
+                        System.out.println(player.getName()+"  "+player.getScore());
+                    }
                 } catch (Exception e) {
+                    e.printStackTrace();
                     System.out.println("下线："+socket.getRemoteSocketAddress());
                     objectInputStream.close();
                     socket.close();

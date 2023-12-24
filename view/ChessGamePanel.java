@@ -119,7 +119,6 @@ public class ChessGamePanel extends JPanel {
     private void addRestartButton() {
         JButton button = new JButton("Restart");
         button.addActionListener(e -> {
-            gameController.initialize();
             gameController.restartGame();
         });
         button.setLocation(HEIGTH, HEIGTH / 10 + 360);

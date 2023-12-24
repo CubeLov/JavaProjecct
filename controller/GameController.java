@@ -33,8 +33,10 @@ public class GameController implements GameListener {
     private ChessboardPoint selectedPoint2;
 
     private int score;
-
+    private int level;
+    private int step;
     private JLabel statusLabel;
+    public final String mode;
 
     public JLabel getStatusLabel() {
         return statusLabel;
@@ -44,16 +46,24 @@ public class GameController implements GameListener {
         this.statusLabel = statusLabel;
     }
 
-    public GameController(ChessboardComponent view, Chessboard model) {
+    public GameController(ChessboardComponent view, Chessboard model,String mode,int level) {
         this.view = view;
         this.model = model;
+        this.mode=mode;
         this.opt=-1;
+        this.step=0;
+        this.score=0;
+        this.level=level;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
     }
 
     public void initialize() {
+        if(opt!=-1){
+            JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         model.initPieces();
         view.removeAllChessComponentsAtGrids();
         view.initiateChessComponent(model);
@@ -65,15 +75,54 @@ public class GameController implements GameListener {
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
     }
     public void restartGame(){
+        if(opt!=-1){
+            JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         this.score=0;
-        this.opt=-1;
+        this.step=0;
         this.selectedPoint=this.selectedPoint2=null;
         this.statusLabel.setText("Score:" + score);
+        initialize();
     }
+    public void gameFailed(){
+        JOptionPane.showMessageDialog(null, "Game Failed", "Hint", JOptionPane.INFORMATION_MESSAGE);
+
+        int choice = JOptionPane.showConfirmDialog(null, "Do you want to restart?", "Restart", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            restartGame();
+        } else {
+            JOptionPane.showMessageDialog(null, "Game Over", "Hint", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    public void gamePassed(){
+        JOptionPane.showMessageDialog(null, "Game Passed", "Hint", JOptionPane.INFORMATION_MESSAGE);
+        int choice = JOptionPane.showConfirmDialog(null, "Go to next level?", "Choose", JOptionPane.YES_NO_OPTION);
+        if (choice == JOptionPane.YES_OPTION) {
+            if(level+1>3){
+                JOptionPane.showMessageDialog(null, "You win the final game!", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                level++;
+                restartGame();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Game Over", "Hint", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+    public void gameFinished(){
+        JOptionPane.showMessageDialog(null, "Game Finished\nPlease update your grade", "Hint", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     @Override
     public void onPlayerSwapChess() {
         // TODO: Init your swap function here.
         System.out.println("Implement your swap here.");
+        if(opt!=-1){
+            JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
         if (selectedPoint != null && selectedPoint2 != null) {
             if (model.canSwap(selectedPoint, selectedPoint2)) {//判断是否可以交换(交换后是否可消除)
                 //model层交换
@@ -90,7 +139,15 @@ public class GameController implements GameListener {
                 selectedPoint = null;
                 selectedPoint2 = null;
                 updateNull();
+                //步数加一
+                step++;
             }
+            else{
+                JOptionPane.showMessageDialog(null, "Invalid exchange", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Please select two pieces", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     /*
@@ -124,6 +181,8 @@ public class GameController implements GameListener {
                 model.clearVis();
                 view.initiateChessComponent(model);
                 view.repaintAllChessComponent();
+                selectedPoint = null;
+                selectedPoint2 = null;
                 opt=2;
                 break;
             case 2:
@@ -140,20 +199,52 @@ public class GameController implements GameListener {
                     }
                 if(model.checkGrid())
                     opt=3;
-                else //TODO:增加没有可以消除棋子的弹窗
-                    opt=1;
+                else{
+                    opt=-1;
+                }
                 break;
             case 3:
                 updateNull();
                 break;
+            case -1:
+                JOptionPane.showMessageDialog(null, "No pieces can be eliminated", "Hint", JOptionPane.INFORMATION_MESSAGE);
+                break;
         }
 
-
+        System.out.println(step);
         System.out.println("Implement your next step here.");
         this.statusLabel.setText("Score:" + score);
-
+        checkGame();
     }
-
+    private void checkGame(){
+        if(opt==-1&&step==5){
+            if(mode.equals("Manual")){
+                switch (level){
+                    case 1:
+                        if(score>=100)
+                            gamePassed();
+                        else
+                            gameFailed();
+                        break;
+                    case 2:
+                        if(score>=300)
+                            gamePassed();
+                        else
+                            gameFailed();
+                        break;
+                    case 3:
+                        if(score>=800)
+                            gamePassed();
+                        else
+                            gameFailed();
+                        break;
+                }
+            }
+            else if(mode.equals("Online")){
+                gameFinished();
+            }
+        }
+    }
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {

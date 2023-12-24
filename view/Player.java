@@ -1,10 +1,12 @@
 package view;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Player implements Comparable, Serializable {
     private String name;
     private int score;
+    @Serial
     private static final long serialVersionUID=1L;
 
     public Player(String name, int score) {
