@@ -81,6 +81,9 @@ public class GameFrame extends JFrame{
         manualGamePanel.setGameController(gameController);
         gameController.setStatusLabel(manualGamePanel.getStatusLabel());
         mainPanel.add(manualGamePanel,"ManualGame");
+        manualGamePanel.getBackButton().addActionListener(e->{
+            cardLayout.show(mainPanel,"Start");
+        });
     }
     private void setOnlinePanel(){
         mainPanel.add(onlinePanel,"Online");

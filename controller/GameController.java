@@ -58,7 +58,6 @@ public class GameController implements GameListener {
         view.removeAllChessComponentsAtGrids();
         view.initiateChessComponent(model);
         view.repaint();
-        restartGame();
     }
 
     // click an empty cell

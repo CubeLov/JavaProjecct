@@ -20,6 +20,7 @@ public class ChessGamePanel extends JPanel {
     private ChessboardComponent chessboardComponent;
 
     private JLabel statusLabel;
+    private JButton backButton;
 
     public ChessGamePanel(int width, int height) {
         this.WIDTH = width;
@@ -35,6 +36,8 @@ public class ChessGamePanel extends JPanel {
         addSwapConfirmButton();
         addNextStepButton();
         addSaveButton();
+        addShuffleButton();
+        addBackButton();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -100,9 +103,9 @@ public class ChessGamePanel extends JPanel {
         add(button);
     }
 
-    private void addSaveButton() {
+    public void addSaveButton() {
         JButton button = new JButton("Save");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 280);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 440);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -117,11 +120,33 @@ public class ChessGamePanel extends JPanel {
         JButton button = new JButton("Restart");
         button.addActionListener(e -> {
             gameController.initialize();
+            gameController.restartGame();
         });
         button.setLocation(HEIGTH, HEIGTH / 10 + 360);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
+    private void addShuffleButton(){
+        JButton button = new JButton("Shuffle");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 280);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
 
+        button.addActionListener(e -> {
+            gameController.initialize();
+        });
+    }
+    public void addBackButton(){
+        backButton=new JButton("Back");
+        backButton.setLocation(HEIGTH, HEIGTH / 10 + 520);
+        backButton.setSize(200, 60);
+        backButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(backButton);
+    }
+
+    public JButton getBackButton() {
+        return backButton;
+    }
 }

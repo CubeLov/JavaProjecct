@@ -17,7 +17,7 @@ public class Server {
     public static void main(String[] args) throws Exception {
         System.out.println("----服务端启动----");
         ServerSocket serverSocket=new ServerSocket(8888);
-
+        Client.clearFile("records/rank.txt");
         while (true) {
             Socket socket=serverSocket.accept();
             System.out.println("上线： "+socket.getRemoteSocketAddress());
