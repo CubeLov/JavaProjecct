@@ -321,6 +321,11 @@ public class GameController implements GameListener {
 
     public void saveGameToFile(String path) {
         List<String> saveLines=model.convertBoardToList();
+        saveLines.add(Integer.toString(step));
+        saveLines.add(Integer.toString(level));
+        for (String saveLine : saveLines) {
+            System.out.println(saveLine);
+        }
         try {
             Files.write(Path.of(path),saveLines);
         } catch (IOException e) {
@@ -335,6 +340,9 @@ public class GameController implements GameListener {
             view.removeAllChessComponentsAtGrids();
             view.initiateChessComponent(model);
             view.repaint();
+            this.step=Integer.parseInt(loadLines.get(loadLines.size()-2));
+            this.level=Integer.parseInt(loadLines.get(loadLines.size()-1));
+            System.out.println(this.step+" "+this.level);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
