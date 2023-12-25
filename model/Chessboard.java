@@ -233,4 +233,29 @@ public class Chessboard {
         }
     }
 
+    public ChessboardPoint[] hint(){
+        ChessboardPoint[] res=new ChessboardPoint[2];
+        int row=Constant.CHESSBOARD_ROW_SIZE.getNum();
+        int col=Constant.CHESSBOARD_COL_SIZE.getNum();
+        for(int i=0;i<row;i++){
+            for(int j=0;j<row;j++){
+                ChessboardPoint point=new ChessboardPoint(i,j);
+                if(isInGrid(i,j+1)){
+                    ChessboardPoint point1=new ChessboardPoint(i,j+1);
+                    if(canSwap(point,point1)){
+                        res[0]=point;res[1]=point1;
+                        return res;
+                    }
+                }
+                if(isInGrid(i+1,j)){
+                    ChessboardPoint point1=new ChessboardPoint(i+1,j);
+                    if(canSwap(point,point1)){
+                        res[0]=point;res[1]=point1;
+                        return res;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }

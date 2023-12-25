@@ -60,7 +60,6 @@ public class GameController implements GameListener {
 
     public void initialize() {
         if(opt!=-1){
-            JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         model.initPieces();
@@ -142,7 +141,12 @@ public class GameController implements GameListener {
                 step++;
             }
             else{
-                JOptionPane.showMessageDialog(null, "Invalid exchange", "Hint", JOptionPane.INFORMATION_MESSAGE);
+                if(!model.checkGrid()){
+                    JOptionPane.showMessageDialog(null, "Dead end. Please shuffle", "Hint", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "Invalid exchange", "Hint", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else{
@@ -334,6 +338,11 @@ public class GameController implements GameListener {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void getHint(){
+        ChessboardPoint[] res= model.hint();
+        String str=String.format("Please swap "+res[0]+" "+res[1]);
+        JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public int getScore() {

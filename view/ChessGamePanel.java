@@ -38,6 +38,7 @@ public class ChessGamePanel extends JPanel {
         addSaveButton();
         addShuffleButton();
         addBackButton();
+        addHintButton();
     }
 
     public ChessboardComponent getChessboardComponent() {
@@ -71,8 +72,8 @@ public class ChessGamePanel extends JPanel {
      */
     private void addLabel() {
         this.statusLabel = new JLabel("Score:0");
-        statusLabel.setLocation(HEIGTH, HEIGTH / 10);
-        statusLabel.setSize(200, 60);
+        statusLabel.setLocation(HEIGTH, HEIGTH / 10-30);
+        statusLabel.setSize(200, 30);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(statusLabel);
     }
@@ -88,7 +89,7 @@ public class ChessGamePanel extends JPanel {
     private void addSwapConfirmButton() {
         JButton button = new JButton("Confirm Swap");
         button.addActionListener((e) -> chessboardComponent.swapChess());
-        button.setLocation(HEIGTH, HEIGTH / 10 + 120);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 30);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -97,7 +98,7 @@ public class ChessGamePanel extends JPanel {
     private void addNextStepButton() {
         JButton button = new JButton("Next Step");
         button.addActionListener((e) -> chessboardComponent.nextStep());
-        button.setLocation(HEIGTH, HEIGTH / 10 + 200);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 110);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -105,7 +106,7 @@ public class ChessGamePanel extends JPanel {
 
     public void addSaveButton() {
         JButton button = new JButton("Save");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 440);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 350);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -121,14 +122,14 @@ public class ChessGamePanel extends JPanel {
         button.addActionListener(e -> {
             gameController.restartGame();
         });
-        button.setLocation(HEIGTH, HEIGTH / 10 + 360);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 270);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
     private void addShuffleButton(){
         JButton button = new JButton("Shuffle");
-        button.setLocation(HEIGTH, HEIGTH / 10 + 280);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 190);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
@@ -139,7 +140,7 @@ public class ChessGamePanel extends JPanel {
     }
     public void addBackButton(){
         backButton=new JButton("Back");
-        backButton.setLocation(HEIGTH, HEIGTH / 10 + 520);
+        backButton.setLocation(HEIGTH, HEIGTH / 10 + 430);
         backButton.setSize(200, 60);
         backButton.setFont(new Font("Rockwell", Font.BOLD, 20));
         backButton.addActionListener(e->{
@@ -150,5 +151,28 @@ public class ChessGamePanel extends JPanel {
 
     public JButton getBackButton() {
         return backButton;
+    }
+
+    private void addHintButton(){
+        JButton button = new JButton("Hint");
+        button.setLocation(HEIGTH, HEIGTH/10+510);
+        button.setSize(200, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+        button.addActionListener(e -> {
+            gameController.getHint();
+        });
+    }
+
+    public static void main(String[] args) {
+
+        ChessGamePanel s=new ChessGamePanel(1100,810);
+        JFrame frame=new JFrame("Test");
+        frame.setSize(1100,810);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+        frame.getContentPane().add(s,BorderLayout.CENTER);
+        //frame.setContentPane(s);
+        frame.setVisible(true);
     }
 }

@@ -70,8 +70,11 @@ public class GameFrame extends JFrame{
 
     private void setSetPanel(){
         setPanel.getNextButton().addActionListener(e->{
-            cardLayout.show(mainPanel,"ManualGame");
             String difficultOption=setPanel.getSelectedButtonText(setPanel.getDifficultyGroup());
+            if(difficultOption==null){
+                JOptionPane.showMessageDialog(null, "Please choose the level", "Hint", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             if(difficultOption.equals(" EASY")){
                 GameController.level=1;
             }
@@ -82,7 +85,7 @@ public class GameFrame extends JFrame{
                 GameController.level=3;
             }
             String sizeOption=setPanel.getSelectedButtonText(setPanel.getBoardSizeGroup());
-
+            cardLayout.show(mainPanel,"ManualGame");
         });
 
         mainPanel.add(setPanel,"Settings");
