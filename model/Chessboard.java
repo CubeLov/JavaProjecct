@@ -225,7 +225,7 @@ public class Chessboard {
     }
 
     public void convertListToBoard(List<String> loadLines) {
-        for (int i = 0; i < loadLines.size()-2; i++) {
+        for (int i = 0; i < loadLines.size()-4; i++) {
             String[] elements = loadLines.get(i).split(" ");
             for (int j = 0; j < elements.length; j++) {
                 grid[i][j].setPiece(new ChessPiece(ChessPiece.getNameFromNum(Integer.parseInt(elements[j]))));

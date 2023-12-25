@@ -135,7 +135,7 @@ public class ChessGamePanel extends JPanel {
         add(button);
 
         button.addActionListener(e -> {
-            gameController.initialize();
+            gameController.shuffle();
         });
     }
     public void addBackButton(){

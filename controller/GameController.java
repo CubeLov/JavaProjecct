@@ -36,6 +36,7 @@ public class GameController implements GameListener {
     private int score;
     public static int level;
     private int step;
+    private int cntShuffle;
     private JLabel statusLabel;
     public final String mode;
 
@@ -54,6 +55,7 @@ public class GameController implements GameListener {
         this.opt = -1;
         this.step = 0;
         this.score = 0;
+        this.cntShuffle=0;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
@@ -81,9 +83,21 @@ public class GameController implements GameListener {
         }
         this.score = 0;
         this.step = 0;
+        this.cntShuffle=0;
         this.selectedPoint = this.selectedPoint2 = null;
         this.statusLabel.setText("Score:" + score);
         initialize();
+    }
+    public void shuffle(){
+        if(++cntShuffle<=3){
+            String str=String.format("Shuffle successful\nShuffle cnt: "+cntShuffle);
+            JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
+            initialize();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "No more shuffle chances", "Hint", JOptionPane.INFORMATION_MESSAGE);
+
+        }
     }
 
     public void gameFailed() {
@@ -327,6 +341,8 @@ public class GameController implements GameListener {
         List<String> saveLines = model.convertBoardToList();
         saveLines.add(Integer.toString(step));
         saveLines.add(Integer.toString(level));
+        saveLines.add(Integer.toString(cntShuffle));
+        saveLines.add(Integer.toString(score));
         for (String saveLine : saveLines) {
             System.out.println(saveLine);
         }
@@ -358,7 +374,7 @@ public class GameController implements GameListener {
         try {
             List<String> loadLines = Files.readAllLines(Path.of(path));
             boolean flag=false;
-            for(int i=0;i<loadLines.size()-2;i++){
+            for(int i=0;i<loadLines.size()-4;i++){
                 String str=loadLines.get(i);
                 String x=str.replaceAll("\\s+","");
                 for(int j=0;j<x.length();j++){
@@ -382,7 +398,7 @@ public class GameController implements GameListener {
                     break;
                 }
             }
-            if(loadLines.size()!=10||flag){
+            if(loadLines.size()!=12||flag){
                 JOptionPane.showMessageDialog(null, "Board error\nError code: 102", "Hint", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }
@@ -390,17 +406,22 @@ public class GameController implements GameListener {
             view.removeAllChessComponentsAtGrids();
             view.initiateChessComponent(model);
             view.repaint();
-            this.step = Integer.parseInt(loadLines.get(loadLines.size() - 2));
-            level = Integer.parseInt(loadLines.get(loadLines.size() - 1));
-            System.out.println(this.step + " " + level);
+            this.step = Integer.parseInt(loadLines.get(loadLines.size() - 4));
+            level = Integer.parseInt(loadLines.get(loadLines.size() - 3));
+            this.cntShuffle=Integer.parseInt(loadLines.get(loadLines.size() - 2));
+            this.score=Integer.parseInt(loadLines.get(loadLines.size() - 1));
+            this.statusLabel.setText("Score:" + score);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return true;
     }
     public void getHint() {
+
         ChessboardPoint[] res = model.hint();
         String str = String.format("Please swap " + res[0] + " " + res[1]);
+        JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
+
         if (selectedPoint != null) {
             var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
             point1.setSelected(false);
