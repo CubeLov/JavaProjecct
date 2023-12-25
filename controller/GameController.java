@@ -33,7 +33,7 @@ public class GameController implements GameListener {
     private ChessboardPoint selectedPoint2;
 
     private int score;
-    private int level;
+    public static int level;
     private int step;
     private JLabel statusLabel;
     public final String mode;
@@ -46,14 +46,13 @@ public class GameController implements GameListener {
         this.statusLabel = statusLabel;
     }
 
-    public GameController(ChessboardComponent view, Chessboard model,String mode,int level) {
+    public GameController(ChessboardComponent view, Chessboard model,String mode) {
         this.view = view;
         this.model = model;
         this.mode=mode;
         this.opt=-1;
         this.step=0;
         this.score=0;
-        this.level=level;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
@@ -211,7 +210,7 @@ public class GameController implements GameListener {
                 break;
         }
 
-        System.out.println(step);
+        System.out.println(step+"   "+opt);
         System.out.println("Implement your next step here.");
         this.statusLabel.setText("Score:" + score);
         checkGame();

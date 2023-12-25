@@ -71,13 +71,25 @@ public class GameFrame extends JFrame{
     private void setSetPanel(){
         setPanel.getNextButton().addActionListener(e->{
             cardLayout.show(mainPanel,"ManualGame");
+            String difficultOption=setPanel.getSelectedButtonText(setPanel.getDifficultyGroup());
+            if(difficultOption.equals(" EASY")){
+                GameController.level=1;
+            }
+            else if(difficultOption.equals(" MEDIUM")){
+                GameController.level=2;
+            }
+            else if(difficultOption.equals(" HARD")){
+                GameController.level=3;
+            }
+            String sizeOption=setPanel.getSelectedButtonText(setPanel.getBoardSizeGroup());
+
         });
 
         mainPanel.add(setPanel,"Settings");
     }
     private void setManualGamePanel(){
         manualGamePanel.setBackground(Color.GRAY);
-        GameController gameController=new GameController(manualGamePanel.getChessboardComponent(),new Chessboard(),"Manual",1);
+        GameController gameController=new GameController(manualGamePanel.getChessboardComponent(),new Chessboard(),"Manual");
         manualGamePanel.setGameController(gameController);
         gameController.setStatusLabel(manualGamePanel.getStatusLabel());
         mainPanel.add(manualGamePanel,"ManualGame");
@@ -87,7 +99,7 @@ public class GameFrame extends JFrame{
     }
     private void setOnlinePanel(){
         mainPanel.add(onlinePanel,"Online");
-        GameController gameController=new GameController(onlinePanel.getChessboardComponent(),new Chessboard(),"Online",0);
+        GameController gameController=new GameController(onlinePanel.getChessboardComponent(),new Chessboard(),"Online");
         onlinePanel.setGameController(gameController);
         gameController.setStatusLabel(onlinePanel.getStatusLabel());
         onlinePanel.setGameController(onlinePanel.getGameController());

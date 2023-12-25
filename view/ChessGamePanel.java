@@ -20,7 +20,7 @@ public class ChessGamePanel extends JPanel {
     private ChessboardComponent chessboardComponent;
 
     private JLabel statusLabel;
-    private JButton backButton;
+    protected JButton backButton;
 
     public ChessGamePanel(int width, int height) {
         this.WIDTH = width;
@@ -142,6 +142,9 @@ public class ChessGamePanel extends JPanel {
         backButton.setLocation(HEIGTH, HEIGTH / 10 + 520);
         backButton.setSize(200, 60);
         backButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        backButton.addActionListener(e->{
+            gameController.restartGame();
+        });
         add(backButton);
     }
 

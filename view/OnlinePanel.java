@@ -12,6 +12,13 @@ public class OnlinePanel extends ChessGamePanel {
 
     public void addSaveButton() {
     }
+    public void addBackButton(){
+        backButton=new JButton("Back");
+        backButton.setLocation(HEIGTH, HEIGTH / 10 + 520);
+        backButton.setSize(200, 60);
+        backButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(backButton);
+    }
     public void addUpdateButton(){
         updateButton=new JButton("Update");
         updateButton.setLocation(HEIGTH, HEIGTH / 10 + 440);
