@@ -17,6 +17,10 @@ import java.util.Scanner;
  */
 public class Client {
     public static void main(String[] args) throws Exception {
+        new Thread(()->{
+            String path = "music.WAV";
+        new PlayMusic(path);
+        }).start();
         GameFrame gameFrame=new GameFrame(1100,810);
         gameFrame.setVisible(true);
         int onlineScore=0;
