@@ -343,6 +343,25 @@ public class GameController implements GameListener {
         ChessboardPoint[] res= model.hint();
         String str=String.format("Please swap "+res[0]+" "+res[1]);
         JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
+        if(selectedPoint!=null){
+            var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
+            point1.setSelected(false);
+            point1.repaint();
+            selectedPoint=null;
+        }
+        if(selectedPoint2!=null){
+            var point2 = (ChessComponent) view.getGridComponentAt(selectedPoint2).getComponent(0);
+            point2.setSelected(false);
+            point2.repaint();
+            selectedPoint2=null;
+        }
+        selectedPoint=res[0];
+        selectedPoint2=res[1];
+
+        var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
+        var point2 = (ChessComponent) view.getGridComponentAt(selectedPoint2).getComponent(0);
+        point1.setSelected(true);point1.repaint();
+        point2.setSelected(true);point2.repaint();
     }
 
     public int getScore() {
