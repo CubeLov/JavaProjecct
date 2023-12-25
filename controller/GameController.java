@@ -97,6 +97,8 @@ public class GameController implements GameListener {
         }
         else{
             JOptionPane.showMessageDialog(null, "No more shuffle chances", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            if(model.hint()==null)
+                gameFailed();
 
         }
     }
@@ -239,7 +241,7 @@ public class GameController implements GameListener {
     }
 
     private void checkGame() {
-        if (opt == -1 && step == 5) {
+        if ((opt == -1 && step == 5)) {
             if (mode.equals("Manual")) {
                 switch (level) {
                     case 1:
@@ -432,8 +434,11 @@ public class GameController implements GameListener {
         return true;
     }
     public void getHint() {
-
         ChessboardPoint[] res = model.hint();
+        if(res==null){
+            JOptionPane.showMessageDialog(null, "Dead end. Please shuffle", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         String str = String.format("Please swap " + res[0] + " " + res[1]);
         JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
 
