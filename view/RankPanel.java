@@ -41,7 +41,7 @@ public class RankPanel extends JPanel {
                 try {
                     readRank("records/rank.txt");
                     updateRankBoard();
-                    Thread.sleep(100);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

@@ -26,9 +26,9 @@ public class Player implements Comparable, Serializable {
     public int compareTo(Object o) {
         Player t=(Player) o;
         if(score<t.getScore())
-            return -1;
-        if(score>t.getScore())
             return 1;
+        if(score>t.getScore())
+            return -1;
         return 0;
     }
 }

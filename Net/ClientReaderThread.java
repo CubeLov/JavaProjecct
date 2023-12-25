@@ -14,16 +14,20 @@ import java.util.List;
 
 public class ClientReaderThread extends Thread{
     Socket socket;
-    public  ClientReaderThread(Socket socket){
+    InputStream inputStream;
+    ObjectInputStream objectInputStream;
+    public  ClientReaderThread(Socket socket) throws Exception {
         this.socket=socket;
+            inputStream=socket.getInputStream();
+            objectInputStream=new ObjectInputStream(inputStream);
+
+
     }
     public void run(){
         try {
-            InputStream inputStream=socket.getInputStream();
-            ObjectInputStream objectInputStream=new ObjectInputStream(inputStream);
             while (true) {
                 try {
-                    List<Player> players=(List<Player>)objectInputStream.readObject();
+                    List<Player> players= (List<Player>) objectInputStream.readObject();
                     Client.clearFile("records/rank.txt");
                     writeRank("records/rank.txt",players);
                     for (Player player : players) {

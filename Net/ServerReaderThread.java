@@ -22,9 +22,15 @@ public class ServerReaderThread extends Thread{
                 try {
                     String message=dataInputStream.readUTF();
                     String[] p=message.split(" ");
+                    for(int i=0;i<Server.players.size();i++){
+                        if(p[0].equals(Server.players.get(i).getName())){
+                            Server.players.remove(i);
+                            break;
+                        }
+                    }
                     Server.players.add(new Player(p[0],Integer.parseInt(p[1])));
                     System.out.println(message);
-                    sendMessageToAll(message);
+                    sendMessageToAll();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -43,12 +49,13 @@ public class ServerReaderThread extends Thread{
 
     }
 
-    private void sendMessageToAll(String message) throws Exception {
+    private void sendMessageToAll() throws Exception {
         for (Player player : Server.players) {
             System.out.println(player.getName()+"  "+player.getScore());
         }
         for(int i=0;i< Server.onlineSockets.size();i++){
             ObjectOutputStream objectOutputStream=Server.oStream.get(i);
+            objectOutputStream.reset();
             objectOutputStream.writeObject(Server.players);
             objectOutputStream.flush();
         }
