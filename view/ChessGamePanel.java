@@ -1,5 +1,6 @@
 package view;
 
+import Net.PlayMusic;
 import controller.GameController;
 
 import javax.swing.*;
@@ -88,7 +89,10 @@ public class ChessGamePanel extends JPanel {
 
     private void addSwapConfirmButton() {
         JButton button = new JButton("Confirm Swap");
-        button.addActionListener((e) -> chessboardComponent.swapChess());
+        button.addActionListener((e) -> {
+            buttonClicked();
+            chessboardComponent.swapChess();
+        });
         button.setLocation(HEIGTH, HEIGTH / 10 + 30);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
@@ -97,7 +101,10 @@ public class ChessGamePanel extends JPanel {
 
     private void addNextStepButton() {
         JButton button = new JButton("Next Step");
-        button.addActionListener((e) -> chessboardComponent.nextStep());
+        button.addActionListener((e) -> {
+            buttonClicked();
+            chessboardComponent.nextStep();
+        });
         button.setLocation(HEIGTH, HEIGTH / 10 + 110);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
@@ -112,6 +119,7 @@ public class ChessGamePanel extends JPanel {
         add(button);
 
         button.addActionListener(e -> {
+            buttonClicked();
             String path = JOptionPane.showInputDialog(this, "Input Path here");
             gameController.saveGameToFile(path);
         });
@@ -120,6 +128,7 @@ public class ChessGamePanel extends JPanel {
     private void addRestartButton() {
         JButton button = new JButton("Restart");
         button.addActionListener(e -> {
+            buttonClicked();
             gameController.restartGame();
         });
         button.setLocation(HEIGTH, HEIGTH / 10 + 270);
@@ -135,6 +144,7 @@ public class ChessGamePanel extends JPanel {
         add(button);
 
         button.addActionListener(e -> {
+            buttonClicked();
             gameController.shuffle();
         });
     }
@@ -160,6 +170,7 @@ public class ChessGamePanel extends JPanel {
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
         button.addActionListener(e -> {
+            buttonClicked();
             gameController.getHint();
         });
     }
@@ -174,5 +185,9 @@ public class ChessGamePanel extends JPanel {
         frame.getContentPane().add(s,BorderLayout.CENTER);
         //frame.setContentPane(s);
         frame.setVisible(true);
+    }
+    public static void buttonClicked(){
+        String path = "click2.WAV";
+        new PlayMusic(path);
     }
 }

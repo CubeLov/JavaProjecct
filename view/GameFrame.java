@@ -52,18 +52,22 @@ public class GameFrame extends JFrame{
     }
     private void setStartPanel(){
         startPanel.getManualButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Settings");
         });
         startPanel.getLoadButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             String path = JOptionPane.showInputDialog(this, "Input Path here");
             if (manualGamePanel.getGameController().loadGameFromFile(path)) {
                 cardLayout.show(mainPanel,"ManualGame");
             }
         });
         startPanel.getOnlineButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Online");
         });
         startPanel.getRankButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Rank");
         });
         mainPanel.add(startPanel,"Start");
@@ -71,6 +75,7 @@ public class GameFrame extends JFrame{
 
     private void setSetPanel(){
         setPanel.getNextButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             String difficultOption=setPanel.getSelectedButtonText(setPanel.getDifficultyGroup());
             if(difficultOption==null){
                 JOptionPane.showMessageDialog(null, "Please choose the level", "Hint", JOptionPane.INFORMATION_MESSAGE);
@@ -97,6 +102,7 @@ public class GameFrame extends JFrame{
         gameController.setStatusLabel(manualGamePanel.getStatusLabel());
         mainPanel.add(manualGamePanel,"ManualGame");
         manualGamePanel.getBackButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Start");
         });
     }
@@ -108,9 +114,11 @@ public class GameFrame extends JFrame{
         onlinePanel.setGameController(onlinePanel.getGameController());
 
         onlinePanel.getUpdateButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             writeOnlineScore("records/score.txt");
         });
         onlinePanel.getBackButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Start");
         });
     }
@@ -127,6 +135,7 @@ public class GameFrame extends JFrame{
     }
     private void setRegisterPanel(){
         registerPanel.getConfirmButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Start");
             registerPanel.setId(registerPanel.getText());
         });
@@ -134,6 +143,7 @@ public class GameFrame extends JFrame{
     }
     private void setRankPanel(){
         rankPanel.getBackButton().addActionListener(e->{
+            ChessGamePanel.buttonClicked();
             cardLayout.show(mainPanel,"Start");
         });
         mainPanel.add(rankPanel,"Rank");
