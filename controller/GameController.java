@@ -361,6 +361,22 @@ public class GameController implements GameListener {
             for(int i=0;i<loadLines.size()-2;i++){
                 String str=loadLines.get(i);
                 String x=str.replaceAll("\\s+","");
+                for(int j=0;j<x.length();j++){
+                    char c=x.charAt(j);
+                    boolean imageCheck=false;
+                    if(c=='1')
+                        imageCheck=true;
+                    else if(c=='2')
+                        imageCheck=true;
+                    else if(c=='3')
+                        imageCheck=true;
+                    else if(c=='4')
+                        imageCheck=true;
+                    if(!imageCheck){
+                        JOptionPane.showMessageDialog(null, "Picture error\nError code: 103", "Hint", JOptionPane.INFORMATION_MESSAGE);
+                        return false;
+                    }
+                }
                 if(x.length()!=8){
                     flag=true;
                     break;
