@@ -1,5 +1,6 @@
 package controller;
 
+import Net.PlayMusic;
 import listener.GameListener;
 import model.Constant;
 import model.Chessboard;
@@ -158,7 +159,7 @@ public class GameController implements GameListener {
                 //步数加一
                 step++;
             } else {
-                if (!model.checkGrid()) {
+                if (model.hint()==null) {
                     JOptionPane.showMessageDialog(null, "Dead end. Please shuffle", "Hint", JOptionPane.INFORMATION_MESSAGE);
 
                 } else
@@ -266,6 +267,12 @@ public class GameController implements GameListener {
         }
     }
 
+    private void click(){
+        new Thread(()->{
+            String path = "click.WAV";
+            new PlayMusic(path);
+        }).start();
+    }
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
@@ -281,16 +288,19 @@ public class GameController implements GameListener {
                 point1.repaint();
                 selectedPoint = selectedPoint2;
                 selectedPoint2 = null;
+                click();
             } else if (distance2point2 == 0 && point2 != null) {//第三个点为point2，取消选择point2
                 point2.setSelected(false);
                 point2.repaint();
                 selectedPoint2 = null;
+                click();
             } else if (distance2point1 == 1 && point2 != null) {//第三个点为另一个与point1相邻的点
                 point2.setSelected(false);
                 point2.repaint();
                 selectedPoint2 = point;
                 component.setSelected(true);
                 component.repaint();
+                click();
             } else if (distance2point2 == 1 && point1 != null) {//第三个点为另一个与point2相邻的点
                 point1.setSelected(false);
                 point1.repaint();
@@ -298,6 +308,7 @@ public class GameController implements GameListener {
                 selectedPoint2 = point;
                 component.setSelected(true);
                 component.repaint();
+                click();
             }
             return;
         }
@@ -307,6 +318,7 @@ public class GameController implements GameListener {
             selectedPoint = point;
             component.setSelected(true);
             component.repaint();
+            click();
             return;
         }
 
@@ -316,6 +328,7 @@ public class GameController implements GameListener {
             selectedPoint = null;
             component.setSelected(false);
             component.repaint();
+            click();
             return;
         }
 
@@ -323,6 +336,7 @@ public class GameController implements GameListener {
             selectedPoint2 = point;
             component.setSelected(true);
             component.repaint();
+            click();
         } else {//距离过远，取消第一个选择点，将第二个选择点重设为第一个选择点
             selectedPoint2 = null;
 
@@ -334,6 +348,7 @@ public class GameController implements GameListener {
             selectedPoint = point;
             component.setSelected(true);
             component.repaint();
+            click();
         }
     }
 

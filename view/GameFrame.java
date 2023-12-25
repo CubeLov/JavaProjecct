@@ -85,7 +85,6 @@ public class GameFrame extends JFrame{
             else if(difficultOption.equals(" HARD")){
                 GameController.level=3;
             }
-            String sizeOption=setPanel.getSelectedButtonText(setPanel.getBoardSizeGroup());
             cardLayout.show(mainPanel,"ManualGame");
         });
 
