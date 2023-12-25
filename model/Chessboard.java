@@ -214,7 +214,7 @@ public class Chessboard {
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                 ChessPiece piece=grid[i][j].getPiece();
                 if(piece!=null){
-                    sb.append(piece.getName()).append(" ");
+                    sb.append(piece.getNumber()).append(" ");
                 }else {
                     sb.append("0 ");
                 }
@@ -228,7 +228,7 @@ public class Chessboard {
         for (int i = 0; i < loadLines.size()-2; i++) {
             String[] elements = loadLines.get(i).split(" ");
             for (int j = 0; j < elements.length; j++) {
-                grid[i][j].setPiece(new ChessPiece(elements[j]));
+                grid[i][j].setPiece(new ChessPiece(ChessPiece.getNameFromNum(Integer.parseInt(elements[j]))));
             }
         }
     }

@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -46,20 +47,20 @@ public class GameController implements GameListener {
         this.statusLabel = statusLabel;
     }
 
-    public GameController(ChessboardComponent view, Chessboard model,String mode) {
+    public GameController(ChessboardComponent view, Chessboard model, String mode) {
         this.view = view;
         this.model = model;
-        this.mode=mode;
-        this.opt=-1;
-        this.step=0;
-        this.score=0;
+        this.mode = mode;
+        this.opt = -1;
+        this.step = 0;
+        this.score = 0;
         view.registerController(this);
         view.initiateChessComponent(model);
         view.repaint();
     }
 
     public void initialize() {
-        if(opt!=-1){
+        if (opt != -1) {
             return;
         }
         model.initPieces();
@@ -72,18 +73,20 @@ public class GameController implements GameListener {
     @Override
     public void onPlayerClickCell(ChessboardPoint point, CellComponent component) {
     }
-    public void restartGame(){
-        if(opt!=-1){
+
+    public void restartGame() {
+        if (opt != -1) {
             JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        this.score=0;
-        this.step=0;
-        this.selectedPoint=this.selectedPoint2=null;
+        this.score = 0;
+        this.step = 0;
+        this.selectedPoint = this.selectedPoint2 = null;
         this.statusLabel.setText("Score:" + score);
         initialize();
     }
-    public void gameFailed(){
+
+    public void gameFailed() {
         JOptionPane.showMessageDialog(null, "Game Failed", "Hint", JOptionPane.INFORMATION_MESSAGE);
 
         int choice = JOptionPane.showConfirmDialog(null, "Do you want to restart?", "Restart", JOptionPane.YES_NO_OPTION);
@@ -93,14 +96,14 @@ public class GameController implements GameListener {
             JOptionPane.showMessageDialog(null, "Game Over", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    public void gamePassed(){
+
+    public void gamePassed() {
         JOptionPane.showMessageDialog(null, "Game Passed", "Hint", JOptionPane.INFORMATION_MESSAGE);
         int choice = JOptionPane.showConfirmDialog(null, "Go to next level?", "Choose", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION) {
-            if(level+1>3){
+            if (level + 1 > 3) {
                 JOptionPane.showMessageDialog(null, "You win the final game!", "Hint", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else{
+            } else {
                 level++;
                 restartGame();
             }
@@ -108,7 +111,8 @@ public class GameController implements GameListener {
             JOptionPane.showMessageDialog(null, "Game Over", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    public void gameFinished(){
+
+    public void gameFinished() {
         JOptionPane.showMessageDialog(null, "Game Finished\nPlease update your grade", "Hint", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -116,7 +120,7 @@ public class GameController implements GameListener {
     public void onPlayerSwapChess() {
         // TODO: Init your swap function here.
         System.out.println("Implement your swap here.");
-        if(opt!=-1){
+        if (opt != -1) {
             JOptionPane.showMessageDialog(null, "Please press Nextstep button", "Hint", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -139,25 +143,23 @@ public class GameController implements GameListener {
                 updateNull();
                 //步数加一
                 step++;
-            }
-            else{
-                if(!model.checkGrid()){
+            } else {
+                if (!model.checkGrid()) {
                     JOptionPane.showMessageDialog(null, "Dead end. Please shuffle", "Hint", JOptionPane.INFORMATION_MESSAGE);
 
-                }
-                else
+                } else
                     JOptionPane.showMessageDialog(null, "Invalid exchange", "Hint", JOptionPane.INFORMATION_MESSAGE);
             }
-        }
-        else{
+        } else {
             JOptionPane.showMessageDialog(null, "Please select two pieces", "Hint", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
     /*
     更新分数，在窗口中清除已消除棋子
      */
-    private void updateNull(){
-        score+=10*model.eliminateGrid();
+    private void updateNull() {
+        score += 10 * model.eliminateGrid();
         for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
             for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                 ChessboardPoint point = new ChessboardPoint(i, j);
@@ -166,18 +168,19 @@ public class GameController implements GameListener {
                     view.repaintChessComponentAtGrid(point);
                 }
             }
-        opt=1;
+        opt = 1;
     }
+
     @Override
     public void onPlayerNextStep() {
         // TODO: Init your next step function here.
-        switch (opt){
+        switch (opt) {
             case 1:
                 model.fallDown();
                 for (int i = 0; i < Constant.CHESSBOARD_ROW_SIZE.getNum(); i++)
                     for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
                         ChessboardPoint point = new ChessboardPoint(i, j);
-                        if(!model.getVisAtGrid(point))
+                        if (!model.getVisAtGrid(point))
                             view.removeChessComponentAtGrid(point);
                         view.repaintChessComponentAtGrid(point);
                     }
@@ -186,24 +189,24 @@ public class GameController implements GameListener {
                 view.repaintAllChessComponent();
                 selectedPoint = null;
                 selectedPoint2 = null;
-                opt=2;
+                opt = 2;
                 break;
             case 2:
-                int[] upPosition=new int[Constant.CHESSBOARD_COL_SIZE.getNum()];
-                for(int j=0;j<Constant.CHESSBOARD_COL_SIZE.getNum();j++){
-                    upPosition[j]=model.getTopPositionAtCol(j);
+                int[] upPosition = new int[Constant.CHESSBOARD_COL_SIZE.getNum()];
+                for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++) {
+                    upPosition[j] = model.getTopPositionAtCol(j);
                 }
                 model.regeneratePieces();
-                for(int j=0;j<Constant.CHESSBOARD_COL_SIZE.getNum();j++)
-                    for(int i=upPosition[j];i>=0;i--){
+                for (int j = 0; j < Constant.CHESSBOARD_COL_SIZE.getNum(); j++)
+                    for (int i = upPosition[j]; i >= 0; i--) {
                         ChessboardPoint point = new ChessboardPoint(i, j);
-                        view.setChessComponentAtGrid(point,new ChessComponent(view.getCHESS_SIZE(),model.getChessPieceAt(point)));
+                        view.setChessComponentAtGrid(point, new ChessComponent(view.getCHESS_SIZE(), model.getChessPieceAt(point)));
                         view.repaintChessComponentAtGrid(point);
                     }
-                if(model.checkGrid())
-                    opt=3;
-                else{
-                    opt=-1;
+                if (model.checkGrid())
+                    opt = 3;
+                else {
+                    opt = -1;
                 }
                 break;
             case 3:
@@ -214,40 +217,41 @@ public class GameController implements GameListener {
                 break;
         }
 
-        System.out.println(step+"   "+opt);
+        System.out.println(step + "   " + opt);
         System.out.println("Implement your next step here.");
         this.statusLabel.setText("Score:" + score);
         checkGame();
     }
-    private void checkGame(){
-        if(opt==-1&&step==5){
-            if(mode.equals("Manual")){
-                switch (level){
+
+    private void checkGame() {
+        if (opt == -1 && step == 5) {
+            if (mode.equals("Manual")) {
+                switch (level) {
                     case 1:
-                        if(score>=100)
+                        if (score >= 100)
                             gamePassed();
                         else
                             gameFailed();
                         break;
                     case 2:
-                        if(score>=300)
+                        if (score >= 300)
                             gamePassed();
                         else
                             gameFailed();
                         break;
                     case 3:
-                        if(score>=800)
+                        if (score >= 800)
                             gamePassed();
                         else
                             gameFailed();
                         break;
                 }
-            }
-            else if(mode.equals("Online")){
+            } else if (mode.equals("Online")) {
                 gameFinished();
             }
         }
     }
+
     // click a cell with a chess
     @Override
     public void onPlayerClickChessPiece(ChessboardPoint point, ChessComponent component) {
@@ -320,56 +324,88 @@ public class GameController implements GameListener {
     }
 
     public void saveGameToFile(String path) {
-        List<String> saveLines=model.convertBoardToList();
+        List<String> saveLines = model.convertBoardToList();
         saveLines.add(Integer.toString(step));
         saveLines.add(Integer.toString(level));
         for (String saveLine : saveLines) {
             System.out.println(saveLine);
         }
         try {
-            Files.write(Path.of(path),saveLines);
+            Files.write(Path.of(path), saveLines);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public void loadGameFromFile(String path) {
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        // 检查文件名是否包含扩展名
+        if (dotIndex > 0) {
+            return fileName.substring(dotIndex + 1);
+        } else {
+            return ""; // 没有扩展名
+        }
+    }
+    public boolean loadGameFromFile(String path) {
+        Path tPath = Paths.get(path);
+        // 获取文件名
+        String fileName = tPath.getFileName().toString();
+        // 获取文件扩展名
+        String fileExtension = getFileExtension(fileName);
+        if(!fileExtension.equals("txt")){
+            JOptionPane.showMessageDialog(null, "File format error\nError code: 101", "Hint", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
         try {
-            List<String> loadLines= Files.readAllLines(Path.of(path));
+            List<String> loadLines = Files.readAllLines(Path.of(path));
+            boolean flag=false;
+            for(int i=0;i<loadLines.size()-2;i++){
+                String str=loadLines.get(i);
+                String x=str.replaceAll("\\s+","");
+                if(x.length()!=8){
+                    flag=true;
+                    break;
+                }
+            }
+            if(loadLines.size()!=10||flag){
+                JOptionPane.showMessageDialog(null, "Board error\nError code: 102", "Hint", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
             model.convertListToBoard(loadLines);
             view.removeAllChessComponentsAtGrids();
             view.initiateChessComponent(model);
             view.repaint();
-            this.step=Integer.parseInt(loadLines.get(loadLines.size()-2));
-            this.level=Integer.parseInt(loadLines.get(loadLines.size()-1));
-            System.out.println(this.step+" "+this.level);
+            this.step = Integer.parseInt(loadLines.get(loadLines.size() - 2));
+            level = Integer.parseInt(loadLines.get(loadLines.size() - 1));
+            System.out.println(this.step + " " + level);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
-    public void getHint(){
-        ChessboardPoint[] res= model.hint();
-        String str=String.format("Please swap "+res[0]+" "+res[1]);
-        JOptionPane.showMessageDialog(null, str, "Hint", JOptionPane.INFORMATION_MESSAGE);
-        if(selectedPoint!=null){
+    public void getHint() {
+        ChessboardPoint[] res = model.hint();
+        String str = String.format("Please swap " + res[0] + " " + res[1]);
+        if (selectedPoint != null) {
             var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
             point1.setSelected(false);
             point1.repaint();
-            selectedPoint=null;
+            selectedPoint = null;
         }
-        if(selectedPoint2!=null){
+        if (selectedPoint2 != null) {
             var point2 = (ChessComponent) view.getGridComponentAt(selectedPoint2).getComponent(0);
             point2.setSelected(false);
             point2.repaint();
-            selectedPoint2=null;
+            selectedPoint2 = null;
         }
-        selectedPoint=res[0];
-        selectedPoint2=res[1];
+        selectedPoint = res[0];
+        selectedPoint2 = res[1];
 
         var point1 = (ChessComponent) view.getGridComponentAt(selectedPoint).getComponent(0);
         var point2 = (ChessComponent) view.getGridComponentAt(selectedPoint2).getComponent(0);
-        point1.setSelected(true);point1.repaint();
-        point2.setSelected(true);point2.repaint();
+        point1.setSelected(true);
+        point1.repaint();
+        point2.setSelected(true);
+        point2.repaint();
     }
 
     public int getScore() {

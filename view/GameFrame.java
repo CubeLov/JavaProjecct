@@ -56,8 +56,9 @@ public class GameFrame extends JFrame{
         });
         startPanel.getLoadButton().addActionListener(e->{
             String path = JOptionPane.showInputDialog(this, "Input Path here");
-            manualGamePanel.getGameController().loadGameFromFile(path);
-            cardLayout.show(mainPanel,"ManualGame");
+            if (manualGamePanel.getGameController().loadGameFromFile(path)) {
+                cardLayout.show(mainPanel,"ManualGame");
+            }
         });
         startPanel.getOnlineButton().addActionListener(e->{
             cardLayout.show(mainPanel,"Online");

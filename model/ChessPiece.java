@@ -17,6 +17,20 @@ public class ChessPiece {
     public String getName() {
         return name;
     }
+    public int getNumber(){
+        if(name.equals("💎")) return 1;
+        if(name.equals("⚪")) return 2;
+        if(name.equals("▲")) return 3;
+        if(name.equals("🔶")) return 4;
+        return 0;
+    }
+    public static String getNameFromNum(int num){
+        if(num==1) return "💎";
+        if(num==2) return "⚪";
+        if(num==3) return "▲";
+        if(num==4) return "🔶";
+        return null;
+    }
 
     public Color getColor(){return color;}
 
