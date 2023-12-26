@@ -72,7 +72,7 @@ public class ChessGamePanel extends JPanel {
      * 在游戏面板中添加标签
      */
     private void addLabel() {
-        this.statusLabel = new JLabel("Score:0");
+        this.statusLabel = new JLabel("Score:0   Step:0");
         statusLabel.setLocation(HEIGTH, HEIGTH / 10-30);
         statusLabel.setSize(200, 30);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 20));

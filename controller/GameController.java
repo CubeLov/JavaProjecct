@@ -236,7 +236,7 @@ public class GameController implements GameListener {
 
         System.out.println(step + "   " + opt);
         System.out.println("Implement your next step here.");
-        this.statusLabel.setText("Score:" + score);
+        this.statusLabel.setText("Score:" + score+" Step: "+step);
         checkGame();
     }
 
